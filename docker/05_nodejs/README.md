@@ -1,3 +1,4 @@
+```bash
 > sraza @ sraza0522mac ~/code/devops_educative/docker/05_nodejs 22:21:58
 $ docker build -t rsaim/05_nodejs .
 [+] Building 0.5s (12/12) FINISHED                                                                                                            
@@ -21,11 +22,17 @@ $ docker build -t rsaim/05_nodejs .
  => => naming to docker.io/rsaim/05_nodejs                                          0s
 
 Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
+```
 
+```bash
 > sraza @ sraza0522mac ~/code/devops_educative/docker/05_nodejs 22:22:01
 $ docker run --rm -it -p 8087:80 rsaim/05_nodejs
 
 > node-server@1.0.0 start /usr/src/app
 > node index.js
 
-Listening on http://localhost:80
+Listening on http://localhost:80    
+```
+
+
+![API hit](image.png)
