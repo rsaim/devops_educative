@@ -1,0 +1,38 @@
+version: '3'
+services:
+  web:
+    # Path to dockerfile.
+    # '.' represents the current directory in which
+    # docker-compose.yml is present.
+    build: .
+    # Mapping of container port to host
+    ports:
+      - "5003:5000"
+    # Mount volume 
+    volumes:
+      - "/Users/sraza/code/Docker:/code"
+    # Link database container to app container 
+    # for rechability.
+    # backenddbhost is an alias of the host on which the database
+    # service runs
+    links:
+      - "database:backenddbhost"
+    
+  database:
+    # image to fetch from docker hub
+    image: mysql/mysql-server:5.7
+
+    # These envvars are populated using .env
+    # Environment variables for startup script
+    # container will use these variables
+    # to start the container with these define variables.
+    env_file:
+      - ./.env
+
+    # Mount init.sql file to automatically run 
+    # and create tables for us.
+    # everything in docker-entrypoint-initdb.d folder
+    # is executed as soon as container is up nd running.
+    volumes:
+      - "/Users/sraza/code/Docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql"
+    
