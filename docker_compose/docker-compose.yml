@@ -10,7 +10,7 @@ services:
       - "5001:5000"
     # Mount volume 
     volumes:
-      - "/Users/sraza/code/devops_educative/docker_compose/:/exercise_3"
+      - ".:/exercise_3"
     # Link database container to app container 
     # for rechability.
     links:
@@ -42,5 +42,5 @@ services:
     # everything in docker-entrypoint-initdb.d folder
     # is executed as soon as container is up nd running.
     volumes:
-      - "/Users/sraza/code/devops_educative/docker_compose/db/init.sql:/docker-entrypoint-initdb.d/init.sql"
+      - "./db/init.sql:/docker-entrypoint-initdb.d/init.sql"
     
