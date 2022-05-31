@@ -5,30 +5,23 @@ services:
     # '.' represents the current directory in which
     # docker-compose.yml is present.
     build: .
-
-    # Mapping of container port to host
-    
+    # Mapping of <container port>:<host port>
     ports:
       - "5001:5000"
     # Mount volume 
     volumes:
       - "/Users/sraza/code/devops_educative/docker_compose/:/exercise_3"
-
     # Link database container to app container 
     # for rechability.
     links:
       - "database:exercisedb"
-
     command: ["flask", "run"]
-
     environment:
       - "FLASK_RUN_HOST=0.0.0.0"
-
     depends_on:
       - database
     
   database:
-
     # image to fetch from docker hub
     build:
       context: ./db
