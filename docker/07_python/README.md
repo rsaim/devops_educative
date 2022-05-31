@@ -1,3 +1,4 @@
+```sh
 $ docker build -t rsaim/07_python .
 [+] Building 0.3s (9/9) FINISHED                                                                                                              
  => [internal] load build definition from Dockerfile                      .0s
@@ -17,6 +18,7 @@ $ docker build -t rsaim/07_python .
  => => naming to docker.io/rsaim/07_python                                .0s
 
 Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them> sraza @ sraza0522mac ~/code/devops_educative/docker/07_python 23:07:23
+
 $ docker run --rm -it -p 8087:5000 rsaim/07_python
  * Serving Flask app 'server.py' (lazy loading)
  * Environment: production
@@ -29,3 +31,4 @@ $ docker run --rm -it -p 8087:5000 rsaim/07_python
  * Running on http://172.17.0.4:5000 (Press CTRL+C to quit)
 172.17.0.1 - - [30/May/2022 03:07:32] "GET / HTTP/1.1" 200 -
 172.17.0.1 - - [30/May/2022 03:07:33] "GET /v1/square/4 HTTP/1.1" 200 -
+```
