@@ -207,3 +207,9 @@ replicaset.apps "go-demo-2-api" deleted
 $ kubectl delete -f k8s-specs/svc/go-demo-2-api-svc.yml
 service "go-demo-2-api" deleted
 ```
+
+Status of the cluster after deletion:
+
+```bash
+
+```
