@@ -191,8 +191,19 @@ hello, world!
 We have used 4 yaml files to create the cluster with 3 replicas of the backed api and 1 replica of the database.
 
 ```bash
-kubectl delete -f k8s-specs/svc/go-demo-2-db-rs.yml
-kubectl delete -f k8s-specs/svc/go-demo-2-db-svc.yml
-kubectl delete -f k8s-specs/svc/go-demo-2-api-rs.yml
-kubectl delete -f k8s-specs/svc/go-demo-2-api-svc.yml
+> saim @ Saims-MBP ~/github/devops_educative/kubernetes_practical_guide 18:54:10
+$ kubectl delete -f k8s-specs/svc/go-demo-2-db-rs.yml
+replicaset.apps "go-demo-2-db" deleted
+
+> saim @ Saims-MBP ~/github/devops_educative/kubernetes_practical_guide 18:54:36
+$ kubectl delete -f k8s-specs/svc/go-demo-2-db-svc.yml
+service "go-demo-2-db" deleted
+
+> saim @ Saims-MBP ~/github/devops_educative/kubernetes_practical_guide 18:54:36
+$ kubectl delete -f k8s-specs/svc/go-demo-2-api-rs.yml
+replicaset.apps "go-demo-2-api" deleted
+
+> saim @ Saims-MBP ~/github/devops_educative/kubernetes_practical_guide 18:54:36
+$ kubectl delete -f k8s-specs/svc/go-demo-2-api-svc.yml
+service "go-demo-2-api" deleted
 ```
