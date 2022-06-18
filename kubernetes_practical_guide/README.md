@@ -30,10 +30,7 @@ $ minikube dashboard
 🎉 Opening http://127.0.0.1:64864/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/ in your default browser...
 ^Z
 [1]+ Stopped minikube dashboard> saim @ Saims-MacBook-Pro.local ~/github/devops_educative/kubernetes_practical_guide 15:02:22 
-
 ```
-
-
 
 ```bash
 $ minikube ssh 
@@ -55,8 +52,8 @@ drwx------ 2 docker docker 80 Jan 1 1970 .ssh
 ```bash
 > saim @ Saims-MacBook-Pro.local ~/github/devops_educative/kubernetes_practical_guide/k8s-specs 15:27:48
 $ git remote -v
-origin	https://github.com/vfarcic/k8s-specs.git (fetch)
-origin	https://github.com/vfarcic/k8s-specs.git (push)
+origin    https://github.com/vfarcic/k8s-specs.git (fetch)
+origin    https://github.com/vfarcic/k8s-specs.git (push)
 ```
 
 We evaluated `minikube` variables so that our local Docker client is using Docker server running inside the VM. Further on, we listed all the containers based on the `mongo` image.
@@ -81,15 +78,11 @@ export MINIKUBE_ACTIVE_DOCKERD="minikube"
 # eval $(minikube -p minikube docker-env)
 ```
 
-
-
 ```
 saim @ Saims-MBP ~/github/devops_educative/kubernetes_practical_guide 15:45:30
 $ k delete pod db
 pod "db" deleted
 ```
-
-
 
 ## Executing a New Process[#](https://www.educative.io/module/lesson/a-practical-guide-to-kubernetes/7no445Y6Oy8#Executing-a-New-Process)
 
@@ -99,8 +92,6 @@ Run a command `ps aux` in the `db` pod
 ```
 kubectl exec db ps aux
 ```
-
-
 
 The **output** will be similar as follows.
 
@@ -112,8 +103,6 @@ root 1 0.5 2.9 967452 59692 ? Ssl 21:47 0:03 mongod --rest --httpinterface
 root 31 0.0 0.0 17504 1980 ? Rs 21:58 0:00 ps aux
 ```
 
-
-
 > kubectl exec -it db sh
 
 We’re inside the `sh` process inside the container. Since the container hosts a Mongo database, we can, for example, execute `db.stats()` to confirm that the database is indeed running.
@@ -121,8 +110,6 @@ We’re inside the `sh` process inside the container. Since the container host
 >  echo 'db.stats()' | mongo localhost:27017/test
 
 We used `mongo` client to execute `db.stats()` for the database `test` running on `localhost:27017`. Since we’re not trying to learn Mongo, the only purpose of this exercise was to prove that the database is up-and-running. Let’s get out of the container.
-
-
 
 Logs from a pod:
 
@@ -155,10 +142,50 @@ $ k logs db
 2022-06-18T19:57:08.499+0000 I NETWORK  [websvr] admin web console waiting for connections on port 28017
 2022-06-18T19:57:08.503+0000 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/db/diagnostic.data'
 2022-06-18T19:57:08.509+0000 I INDEX    [initandlisten] build index on: admin.system.version properties: { v: 2, key: { version: 1 }, name: "incompatible_with_version_32", ns: "admin.system.version" }
-2022-06-18T19:57:08.509+0000 I INDEX    [initandlisten] 	 building index using bulk method
+2022-06-18T19:57:08.509+0000 I INDEX    [initandlisten]      building index using bulk method
 2022-06-18T19:57:08.510+0000 I INDEX    [initandlisten] build index done.  scanned 0 total records. 0 secs
 2022-06-18T19:57:08.510+0000 I NETWORK  [thread1] waiting for connections on port 27017
 ```
+
+Accessing environment variables of a pod:
+
+```bash
+$ k exec pod/go-demo-2-db-nmqq9 env
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=go-demo-2-db-nmqq9
+GO_DEMO_2_DB_PORT=tcp://10.99.176.120:27017
+GO_DEMO_2_API_PORT_8080_TCP_ADDR=10.105.125.125
+KUBERNETES_PORT_443_TCP=tcp://10.96.0.1:443
+KUBERNETES_PORT_443_TCP_PORT=443
+GO_DEMO_2_DB_SERVICE_PORT=27017
+GO_DEMO_2_DB_PORT_27017_TCP_PORT=27017
+GO_DEMO_2_API_PORT_8080_TCP_PROTO=tcp
+GO_DEMO_2_API_PORT_8080_TCP_PORT=8080
+KUBERNETES_SERVICE_HOST=10.96.0.1
+KUBERNETES_SERVICE_PORT=443
+KUBERNETES_PORT_443_TCP_PROTO=tcp
+GO_DEMO_2_DB_SERVICE_HOST=10.99.176.120
+GO_DEMO_2_DB_PORT_27017_TCP_ADDR=10.99.176.120
+GO_DEMO_2_API_SERVICE_HOST=10.105.125.125
+GO_DEMO_2_API_PORT=tcp://10.105.125.125:8080
+GO_DEMO_2_API_PORT_8080_TCP=tcp://10.105.125.125:8080
+KUBERNETES_SERVICE_PORT_HTTPS=443
+KUBERNETES_PORT=tcp://10.96.0.1:443
+KUBERNETES_PORT_443_TCP_ADDR=10.96.0.1
+GO_DEMO_2_DB_PORT_27017_TCP=tcp://10.99.176.120:27017
+GO_DEMO_2_DB_PORT_27017_TCP_PROTO=tcp
+GO_DEMO_2_API_SERVICE_PORT=8080
+GOSU_VERSION=1.7
+MONGO_MAJOR=3.3
+MONGO_VERSION=3.3.15
+MONGO_PACKAGE=mongodb-org-unstable
+HOME=/root
+```
+
+Accessing external IP of a svc:
+
+
 
 ```bash
 
