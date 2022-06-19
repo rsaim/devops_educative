@@ -189,5 +189,30 @@ Accessing external IP of a svc:
 
 ```bash
 
+> saim @ Saims-MBP ~/github/devops_educative/kubernetes_practical_guide 19:16:32
+$ kubectl describe svc go-demo-2-db
+Name:              go-demo-2-db
+Namespace:         default
+Labels:            <none>
+Annotations:       <none>
+Selector:          service=go-demo-2,type=db
+Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
+IP:                10.99.176.120
+IPs:               10.99.176.120
+Port:              <unset>  27017/TCP
+TargetPort:        27017/TCP
+Endpoints:         172.17.0.5:27017
+Session Affinity:  None
+Events:            <none>
 
 ```
+
+Note:
+
+- Kubernetes converts Service names into DNSes and adds them to the DNS server. It is a cluster add-on that is already set up by Minikube.
+
+- See architectural ovrbview of services - https://www.educative.io/api/collection/10370001/5920988434792448/page/6323757134118912/image/5642507289362432.png
+
+- 

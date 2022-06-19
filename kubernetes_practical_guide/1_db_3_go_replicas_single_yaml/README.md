@@ -1,7 +1,5 @@
-### Manifest for 1 replica of the Mondo DB service.
-
-```yaml
-$ cat go-demo-2-db-rs.yml
+```bash
+$ cat go-demo-2.yml
 apiVersion:  apps/v1
 kind: ReplicaSet
 metadata:
@@ -23,21 +21,9 @@ spec:
         image: mongo:3.3
         ports:
         - containerPort: 28017
-```
 
-```bash
-$ k create -f go-demo-2-db-rs.yml
-replicaset.apps/go-demo-2-db created
+---
 
-$ k get pods
-NAME                 READY   STATUS    RESTARTS   AGE
-go-demo-2-db-wbwjz   1/1     Running   0          34s
-```
-
-##### The next one is the Service for the Pod we just created through the ReplicaSet.
-
-```bash
-$ cat go-demo-2-db-svc.yml
 apiVersion: v1
 kind: Service
 metadata:
@@ -49,27 +35,8 @@ spec:
     type: db
     service: go-demo-2
 
-$ k create -f k8s-specs/svc/vc.yml
-service/go-demo-2-db created
+---
 
-$ k get pods
-NAME                 READY   STATUS    RESTARTS   AGE
-go-demo-2-db-wbwjz   1/1     Running   0          3m47s
-
-$ k get services
-NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE
-go-demo-2-db   ClusterIP   10.100.246.86   <none>        27017/TCP   8s
-kubernetes     ClusterIP   10.96.0.1       <none>        443/TCP     4h1m
-```
-
-##### We are finished with the database. The ReplicaSet will make sure that the Pod is (almost) always up-and-running and the Service will allow other Pods to communicate with it through a fixed DNS.
-
-## Backend API
-
-Create the backend Go service with 3 replicas.
-
-```bash
-$ cat go-demo-2-api-rs.yml
 apiVersion:  apps/v1
 kind: ReplicaSet
 metadata:
@@ -103,14 +70,8 @@ spec:
             path: /demo/hello
             port: 8080
 
-$ k create -f k8s-specs/svc/rs.yml
-replicaset.apps/go-demo-2-api created
-```
+---
 
-Define service to expose the GO api to outside world using port **8080** using `NodePort`.
-
-```bash
-$ cat go-demo-2-api-svc.yml
 apiVersion: v1
 kind: Service
 metadata:
@@ -123,67 +84,60 @@ spec:
     type: api
     service: go-demo-2
 
-$ k create -f k8s-specs/svc/svc.yml
+$ k create -f go-demo-2.yml
+replicaset.apps/go-demo-2-db created
+service/go-demo-2-db created
+replicaset.apps/go-demo-2-api created
 service/go-demo-2-api created
-```
 
-The 4 created pods/services and everything else in the cluster.
+$ k get -f go-demo-2.yml
+NAME                           DESIRED   CURRENT   READY   AGE
+replicaset.apps/go-demo-2-db   1         1         1       26s
 
-```bash
-$ k get all
-NAME                      READY   STATUS    RESTARTS   AGE
-pod/go-demo-2-api-p5jmq   1/1     Running   0          2m57s
-pod/go-demo-2-api-p8cv8   1/1     Running   0          2m57s
-pod/go-demo-2-api-pghcg   1/1     Running   0          2m57s
-pod/go-demo-2-db-wbwjz    1/1     Running   0          26m
-
-NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-service/go-demo-2-api   NodePort    10.99.211.103   <none>        8080:31881/TCP   74s
-service/go-demo-2-db    ClusterIP   10.100.246.86   <none>        27017/TCP        23m
-service/kubernetes      ClusterIP   10.96.0.1       <none>        443/TCP          4h24m
+NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE
+service/go-demo-2-db   ClusterIP   10.99.176.120   <none>        27017/TCP   26s
 
 NAME                            DESIRED   CURRENT   READY   AGE
-replicaset.apps/go-demo-2-api   3         3         3       2m57s
-replicaset.apps/go-demo-2-db    1         1         1       26m
-```
+replicaset.apps/go-demo-2-api   3         3         3       26s
 
-Hitting service from outside:
+NAME                    TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/go-demo-2-api   NodePort   10.105.125.125   <none>        8080:31846/TCP   26s
 
-```bash
-$ minikube ip
-192.168.59.100
+$ k get all
+NAME                      READY   STATUS    RESTARTS   AGE
+pod/go-demo-2-api-cgr4n   1/1     Running   0          40s
+pod/go-demo-2-api-qw2bn   1/1     Running   0          40s
+pod/go-demo-2-api-stjx6   1/1     Running   0          40s
+pod/go-demo-2-db-nmqq9    1/1     Running   0          40s
 
-$ kubectl get svc go-demo-2-api -o jsonpath="{.spec.ports[0].nodePort}"
-31881
+NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/go-demo-2-api   NodePort    10.105.125.125   <none>        8080:31846/TCP   40s
+service/go-demo-2-db    ClusterIP   10.99.176.120    <none>        27017/TCP        40s
+service/kubernetes      ClusterIP   10.96.0.1        <none>        443/TCP          4h50m
+
+NAME                            DESIRED   CURRENT   READY   AGE
+replicaset.apps/go-demo-2-api   3         3         3       40s
+replicaset.apps/go-demo-2-db    1         1         1       40s
 
 $ curl -i "http://192.168.59.100:31881/demo/hello"
+curl: (7) Failed to connect to 192.168.59.100 port 31881: Connection refused
+
+$ kubectl get svc go-demo-2-api -o jsonpath="{.spec.ports[0].nodePort}"
+31846
+
+$ curl -i "http://192.168.59.100:31846/demo/hello"
 HTTP/1.1 200 OK
-Date: Sat, 18 Jun 2022 22:51:41 GMT
+Date: Sat, 18 Jun 2022 23:14:24 GMT
 Content-Length: 14
 Content-Type: text/plain; charset=utf-8
 
 hello, world!
 ```
 
-We have used 4 yaml files to create the cluster with 3 replicas of the backed api and 1 replica of the database.
+### Delete minikube
 
 ```bash
-$ kubectl delete -f go-demo-2-db-rs.yml
-replicaset.apps "go-demo-2-db" deleted
-
-$ kubectl delete -f k8s-specs/svc/vc.yml
-service "go-demo-2-db" deleted
-
-$ kubectl delete -f k8s-specs/svc/go-demo-2-api-set.apps "go-demo-2-api" deleted
-
-$ kubectl delete -f k8s-specs/svc/go-demo-2-api-svc.yml
-servicpi" deleted
-```
-
-Status of the cluster after deletion:
-
-```bash
-$ k get all
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   4h42m
+$ minikube delete
+🔥  Deleting "minikube" in virtualbox ...
+💀  Removed all traces of the "minikube" cluster.
 ```
