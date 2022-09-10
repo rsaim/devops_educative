@@ -1,3 +1,4 @@
+```bash
 > sraza @ sraza0522mac ~/code/devops_educative 16:53:46
 $ docker build -t hello_img .
 [+] Building 4.2s (5/5) FINISHED
@@ -27,3 +28,4 @@ Hello World
 > sraza @ sraza0522mac ~/code/devops_educative 17:00:41
 $ cat Dockerfile
 FROM debian:11
+```
