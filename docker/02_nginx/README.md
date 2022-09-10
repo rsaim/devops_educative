@@ -1,3 +1,4 @@
+```bash
 > sraza @ sraza0522mac ~/code/devops_educative/02_nginx 17:18:26
 $ docker build -t webserver .
 [+] Building 4.0s (7/7) FINISHED
@@ -32,3 +33,4 @@ $ docker run --rm -it -p 8082:80 webserver
 172.17.0.1 - - [29/May/2022:21:19:24 +0000] "GET / HTTP/1.1" 200 324 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" "-"
 2022/05/29 21:19:24 [error] 8#8: *2 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.17.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost:8082", referrer: "http://localhost:8082/"
 172.17.0.1 - - [29/May/2022:21:19:24 +0000] "GET /favicon.ico HTTP/1.1" 404 556 "http://localhost:8082/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" "-"
+```
