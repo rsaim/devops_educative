@@ -1,3 +1,4 @@
+```sh
 > sraza @ sraza0522mac ~/code/devops_educative/java 21:39:25
 $ docker build -t rsaim/java .
 [+] Building 1.0s (12/12) FINISHED                                                                                                            
@@ -25,3 +26,4 @@ Use 'docker scan' to run Snyk tests against images to find vulnerabilities and l
 > sraza @ sraza0522mac ~/code/devops_educative/java 21:40:31
 $ docker run rsaim/java
 I'm Java running in a container.
+```
