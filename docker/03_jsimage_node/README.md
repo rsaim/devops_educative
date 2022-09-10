@@ -1,3 +1,4 @@
+```sh
 > sraza @ sraza0522mac ~/code/devops_educative/03_jsimage_node 18:25:55
 $ docker build -t jsimage .
 [+] Building 0.3s (7/7) FINISHED                                                                                                              
@@ -21,3 +22,4 @@ Use 'docker scan' to run Snyk tests against images to find vulnerabilities and l
 $ docker run jsimage
 Area of a 2 cm disk:
     12.566370614359172 cm²
+```
